@@ -17,10 +17,13 @@
     {% endif %}
 
 
-    <h2></h2>
+    <h2>Organiser</h2>
+    <br>
 
+    <a href="/categorie/create?id={{projet.getId}}"><button class='btn btn-secondary'>Créer catégorie</button></a>
 
-    <h2></h2>
+    <br><br>
+    <h2>Plan du projet</h2>
         
     {% if categories is defined %}
         {% for categorie in categories %}
@@ -31,6 +34,10 @@
                 <label>
                     {{ categorie.getDescription }}
                 </label
+                <label>
+                    <a href=""><img src="#"></a>
+                    <a href="/categorie/delete?id={{categorie.getId}}"><img src="#"></a>
+                </label>
             </fieldset
         {% endfor %}
     {% endif %}

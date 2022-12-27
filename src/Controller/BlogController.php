@@ -105,6 +105,48 @@ class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/projet/delete', name: 'app_projet_delete')]
+    public function projetDelete(EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $projetId = $_GET['projetId'];
+
+        $projets = $entityManager->getRepository(Projet::class)->findBy(array("id"=>$projetId));
+        if ($projets != null)
+        {
+            $projet = $projets[0];
+        }
+        $categories = $entityManager->getRepository(Categorie::class)->findBy(array("projetId" => $projetId));
+
+        if ($categories != null)
+        {
+            foreach ($categories as $categorie)
+            {
+                $entityManager->remove($categorie);
+                $articles = $entityManager->getRepository(Article::class)->findBy(array("categorie"=>$projetId));
+                if ($articles != null)
+                {
+                    foreach ($articles as $article)
+                    {
+                        $entityManager->remove($article);
+                    }
+                }
+            }
+        }
+
+
+        $entityManager->remove($projet);
+        $entityManager->flush();
+
+
+
+        return $this->render('blog/accueil.html.twig', [
+            'controller_name' => 'BlogController',
+            'infos' => 'Projet supprimé avec succès.',
+        ]);
+    }
+
     #[Route('/admin', name: 'app_admin')]
     public function admin(): Response
     {
@@ -226,14 +268,6 @@ class BlogController extends AbstractController
         public function ajouterProjet(ManagerRegistry $doctrine, Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, BugAuthAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
         {
             $this->denyAccessUnlessGranted('ROLE_USER');
-
-            $userId = $this->getUser();
-            $infos = $entityManager->getRepository(User::class)->findBy(array("id"=>$userId));
-
-            if ($infos != null)
-            {
-                $info = $infos[0];
-            }
 
             $projet = $entityManager->getRepository(Projet::class)->find($this->getUser());
             $form = $this->createForm(CreateProjetFormType::class, $projet);
