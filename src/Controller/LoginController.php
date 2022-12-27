@@ -22,4 +22,6 @@ class LoginController extends AbstractController
             "error" => $error,
         ]);
     }
+
 }
+

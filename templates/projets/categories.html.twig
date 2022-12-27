@@ -9,7 +9,31 @@
 
 <div class="example-wrapper">
 
-    <h1>Projet {{projet.getTitre}} </h1>
+    <h1>{{projet.getTitre}} </h1>
+    <br>
+
+    {% if infos is defined %}
+        <p style='color:green;'> {{infos}} </p>
+    {% endif %}
+
+
+    <h2></h2>
+
+
+    <h2></h2>
+        
+    {% if categories is defined %}
+        {% for categorie in categories %}
+            <fieldset>
+                <legend>
+                    <a href="/c?id={{categorie.getId}}">{{categorie.getTitre}} </a>
+                </legend>
+                <label>
+                    {{ categorie.getDescription }}
+                </label
+            </fieldset
+        {% endfor %}
+    {% endif %}
 
 </div>
 {% endblock %}

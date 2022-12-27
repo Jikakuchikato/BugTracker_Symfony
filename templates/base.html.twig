@@ -2,7 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}BugTracker2.0{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
@@ -15,6 +16,59 @@
         {% endblock %}
     </head>
     <body>
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="/">BugTracker</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+
+                {% if app.user %}
+                    <li class='nav-item'>
+                        <div class='nav-link' style=''></div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/accueil">Panneau utilisateur</a>
+                    </li>
+                {% endif %}
+                <!--
+                <li class="nav-item">
+                    <a class="nav-link" href="">Se connecter</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Créer un compte</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                -->
+                
+                </ul>
+                
+                {% if app.user %}
+                    <p class='nav-link my-2 my-sm'>Profil: <b>{{app.user.userIdentifier}}</b></p>
+                    <a href="{{ path('app_profil') }}"><button class="btn btn-secondary my-2 my-sm" type="button">Modifier profil</button></a>
+                    <div style="margin-left:20px;"></div>
+                    <a href="{{ path('app_logout') }}"><button class="btn btn-secondary my-2 my-sm" type="button">Se déconnecter</button></a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div style="margin-left:20px;"</div>
+                        <a href="{{ path('app_admin') }}"><button class="btn btn-secondary my-2 my-sm-0" type="button">PanelAdmin</button></a>
+                    {% endif %}
+                {% else %}
+                    <a href="/register"><button class="btn btn-secondary my-2 my-sm-0" type="button">Créer un compte</button></a>
+                    <div style="margin-left:20px;"</div>
+                    <a href="/login"><button class="btn btn-secondary my-2 my-sm-0" type="button">Se connecter</button></a>
+                {% endif %}
+                
+
+                
+                
+
+                
+            </div>
+            </nav>
         {% block body %}{% endblock %}
     </body>
 </html>

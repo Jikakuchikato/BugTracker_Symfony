@@ -11,7 +11,13 @@
     <h1>Panneau Utilisateur</h1>
     <br>
     {% if mdpChangement is defined %}
-        <p style='color:green;'> {{mdpChangement}} </p>
+        <p style='color:green;'>{{mdpChangement}}</p>
+    {% endif %}
+    {% if infos is defined %}
+        <p style='color:green;'>{{infos}}</p>
+    {% endif %}
+    {% if erreur is defined %}
+        <p style='color:red;'>{{erreur}}</p>
     {% endif %}
 
     <h2>Organiser mes projets :</h2><br>
@@ -30,6 +36,10 @@
             </legend>
             <label>
                 {{ projet.getDescription }}
+            </label>
+            <label>
+                <a href=""><img src="/assets/settings.png"></a>
+                <a href=""><img src="/assets/delete.png"></a>
             </label>
             
         </fieldset>

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Article;
+use App\Entity\Projet;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -31,6 +32,24 @@ class BddBugTrackerController extends AbstractController
 
     }
 
+    #[Route('/projet/createtest', name: 'app_create_projettest')]
+    public function createProjetTest(ManagerRegistry $doctrine): Response
+    {
+        $entityManager = $doctrine->getManager();
+
+        $projet = new Projet();
+        $projet->setTitre("Titre Projet 2")
+                ->setDescription("Description Projet 2")
+                ->setDateCrea(new DateTime())
+                ->setAuteur(array("Jika"));
+
+        $entityManager->persist($projet);
+        $entityManager->flush();
+
+        return new Response ();
+
+    }
+
     #[Route('/blog', name: 'app_bdd_show')]
     public function afficherArticle(ManagerRegistry $doctrine): Response
     {
@@ -39,11 +58,6 @@ class BddBugTrackerController extends AbstractController
         if (!$articles)
         {
             throw $this->createNotFoundException("Aucun item trouvé");
-        }
-
-        foreach ($articles as $art)
-        {
-            //echo $art->getTitre();
         }
         
         return $this->render('blog/blog.html.twig', [

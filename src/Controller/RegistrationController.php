@@ -17,6 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use DateTime;
+//use Symfony\Component\Validator\Constraints\DateTime;
 
 class RegistrationController extends AbstractController
 {
@@ -33,8 +35,9 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        
+        
+        if ($form->isSubmitted() && $form->isValid() && $form->get('code')->getData() == "7777") {
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -42,9 +45,15 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setRoles(array("ROLE_USER"));
+            $user->setPrenom($form->get('username')->getData());
+            $user->setNom("");
+            $user->setdateNaissance(new DateTime('1970-01-01'));
+            $user->setDateInscription(new DateTime());
 
             $entityManager->persist($user);
             $entityManager->flush();
+
             /*
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
