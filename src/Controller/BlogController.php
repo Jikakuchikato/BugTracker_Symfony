@@ -51,12 +51,12 @@ class BlogController extends AbstractController
         ]);
     }
 
-    #[Route('/p/', name: 'app_blog')]
+    #[Route('/projet', name: 'app_blog')]
     public function projets(EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $id = $_GET['id'];
+        $id = $_GET['projetId'];
 
         $projets= $entityManager->getRepository(Projet::class)->findBy(array("id" => $id));
 

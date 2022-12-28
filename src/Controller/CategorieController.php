@@ -20,19 +20,25 @@ use Doctrine\ORM\EntityManagerInterface;
 class CategorieController extends AbstractController
 {
     #[Route('/categorie', name: 'app_categorie')]
-    public function categorie(): Response
+    public function categorie(EntityManagerInterface $entityManager): Response
     {
-        return $this->render('categorie/index.html.twig', [
-            'controller_name' => 'CategorieController',
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $categorie = $entityManager->getRepository(Categorie::class)->findBy(array('id' => $_GET['catId']));
+        $articles = $entityManager->getRepository(Article::class)->findBy(array('categorie'=>$_GET['catId']));
+
+        return $this->render('categorie/articles.html.twig', [
+            'categorie' => $categorie[0],
+            'articles' => $articles,
         ]);
     }
 
-    #[Route('/categorie/create', name: 'app_categorie')]
+    #[Route('/categorie/create', name: 'app_create_categorie')]
     public function categorieCreate(Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $projetId = $_GET['id'];
+        $projetId = $_GET['catId'];
         $projet = $entityManager->getRepository(Projet::class)->findBy(array("id" => $projetId));
         $c = new Categorie();
 
@@ -70,7 +76,7 @@ class CategorieController extends AbstractController
     public function categorieDelete(EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        $categorieId = $_GET['id'];
+        $categorieId = $_GET['catId'];
 
         $categories = $entityManager->getRepository(Categorie::class)->findBy(array('id' => $categorieId));
         if ($categories != null)
@@ -89,7 +95,6 @@ class CategorieController extends AbstractController
         $entityManager->flush();
 
         $projet = $entityManager->getRepository(Categorie::class)->findBy(array("projetId" => $categories[0]->getProjetId()));
-        //$categories = $entityManager->getRepository(Categorie::class)->findBy(array("projet_id" => $projetId));
 
         $categoriesUpdate = $entityManager->getRepository(Categorie::class)->findAll();
         

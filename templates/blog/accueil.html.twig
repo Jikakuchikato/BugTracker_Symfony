@@ -32,7 +32,7 @@
          {% for projet in projets %}
          <fieldset>
             <legend>
-                <a href="/p?id={{projet.getId}}">{{projet.getTitre}} </a>
+                <a href="/projet?projetId={{projet.getId}}">{{projet.getTitre}} </a>
             </legend>
             <label>
                 {{ projet.getDescription }}

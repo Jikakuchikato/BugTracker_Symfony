@@ -48,6 +48,7 @@
                 </ul>
                 
                 {% if app.user %}
+                    <p class='nav-link my-2 my-sm'>Projet/Categorie/Item</b></p>
                     <p class='nav-link my-2 my-sm'>Profil: <b>{{app.user.userIdentifier}}</b></p>
                     <a href="{{ path('app_profil') }}"><button class="btn btn-secondary my-2 my-sm" type="button">Modifier profil</button></a>
                     <div style="margin-left:20px;"></div>
