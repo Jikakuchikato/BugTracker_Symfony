@@ -20,7 +20,7 @@
     <h2>Organiser</h2>
     <br>
 
-    <a href="/categorie/create?catId={{projet.getId}}"><button class='btn btn-secondary'>Créer catégorie</button></a>
+    <a href="http://localhost:8000/categorie/create?catId={{projet.getId}}"><button class='btn btn-secondary'>Créer catégorie</button></a>
 
     <br><br>
     <h2>Plan du projet</h2>
@@ -29,14 +29,14 @@
         {% for categorie in categories %}
             <fieldset>
                 <legend>
-                    <a href="/categorie?catId={{categorie.getId}}">{{categorie.getTitre}} </a>
+                    <a href="http://localhost:8000/categorie?catId={{categorie.getId}}">{{categorie.getTitre}} </a>
                 </legend>
                 <label>
                     {{ categorie.getDescription }}
                 </label
                 <label>
-                    <a href=""><img src="#"></a>
-                    <a href="/categorie/delete?catId={{categorie.getId}}"><img src="#"></a>
+                    <a href="http://localhost:8000/#"><img src="#"></a>
+                    <a href="http://localhost:8000/categorie/delete?projetId={{projet.getId}}&catId={{categorie.getId}}"><img src="#"></a>
                 </label>
             </fieldset
         {% endfor %}

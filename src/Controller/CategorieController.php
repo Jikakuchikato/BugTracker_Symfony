@@ -55,7 +55,7 @@ class CategorieController extends AbstractController
             $entityManager->persist($c);
             $entityManager->flush();
 
-            $categories = $entityManager->getRepository(Categorie::class)->findAll();
+            $categories = $entityManager->getRepository(Categorie::class)->findBy(array("projetId"=>$_GET['catId']));
             if ($categories != null) {
                 $categorie = $categories[0];
             }
@@ -94,15 +94,14 @@ class CategorieController extends AbstractController
 
         $entityManager->flush();
 
-        $projet = $entityManager->getRepository(Categorie::class)->findBy(array("projetId" => $categories[0]->getProjetId()));
+        $categoriesUpdate = $entityManager->getRepository(Categorie::class)->findBy(array('projetId'=> $_GET['projetId']));
+        $projet = $entityManager->getRepository(Projet::class)->findOneBy(array("id" => $_GET['projetId']));  
 
-        $categoriesUpdate = $entityManager->getRepository(Categorie::class)->findAll();
         
         return $this->render('projets/categories.html.twig', [
-            'controller_name' => 'BlogController',
             'infos' => 'Catégorie supprimée avec succès.',
             'categories' => $categoriesUpdate,
-            'projet' => $projet[0],
+            'projet' => $projet,
         ]);
     }
 }

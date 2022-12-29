@@ -72,4 +72,42 @@ class ArticleController extends AbstractController
             'articles' => $articles,
         ]);
     }
+
+    #[Route('/article/modif', name: 'app_modif_article')]
+    public function articleModif(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $article = $entityManager->getRepository(Article::class)->findOneBy(array("id" => $_GET['itemId']));
+
+        $form = $this->createForm(CreateArticleFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $article->setTitre($form->get('titre')->getData());
+            $article->setDescription($form->get('description')->getData());
+            $article->setPriorite($form->get('priorite')->getData());
+
+            $entityManager->flush();
+
+            $articles = $entityManager->getRepository(Article::class)->findBy(array('categorie'=>$_GET['catId']));
+            $categories = $entityManager->getRepository(Categorie::class)->findOneBy(array('id'=>$_GET['catId']));
+
+            return $this->render('categorie/articles.html.twig', [
+                'infos' => 'Item modifié avec succès.',
+                'categorie' => $categories,
+                'articles' => $articles,
+            ]);
+        }
+
+        return $this->render('article/modif_article.html.twig', [
+            'item' => $article,
+            'itemForm' => $form->createView(),
+        ]);
+        
+        
+    }
+
+    
 }

@@ -135,14 +135,23 @@ class BlogController extends AbstractController
             }
         }
 
-
         $entityManager->remove($projet);
         $entityManager->flush();
 
+        $query = $entityManager->getRepository(Projet::class)->findAll();
 
+        $liste = [];
+        foreach ($query as $sql)
+        {
+            if (in_array($this->getUser()->getUsername(),$sql->getAuteur()))
+            {
+                array_push($liste, $sql);
+            }
+        }
 
         return $this->render('blog/accueil.html.twig', [
             'controller_name' => 'BlogController',
+            'projets' => $liste,
             'infos' => 'Projet supprimé avec succès.',
         ]);
     }
@@ -307,6 +316,48 @@ class BlogController extends AbstractController
             ]);
             
         }
+
+        #[Route('/projet/modif', name: 'app_modif_projet')]
+        public function modifProjet(ManagerRegistry $doctrine, Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, BugAuthAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+        {
+            $this->denyAccessUnlessGranted('ROLE_USER');
+
+            $projet = $entityManager->getRepository(Projet::class)->findOneBy(array("id"=>$_GET['projetId']));
+            $form = $this->createForm(CreateProjetFormType::class, $projet);
+            $form->handleRequest($request);
+
+
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                $projet->setTitre($form->get('titre')->getData());
+                $projet->setDescription($form->get('description')->getData());
+
+                $entityManager->flush();
+
+                $query = $entityManager->getRepository(Projet::class)->findAll();
+
+                $liste = [];
+                foreach ($query as $sql)
+                {
+                    if (in_array($this->getUser()->getUsername(),$sql->getAuteur()))
+                    {
+                        array_push($liste, $sql);
+                    }
+                }
+                
+                return $this->render('blog/accueil.html.twig', [
+                    'info' => 'Projet crée avec succès.',
+                    'projets' => $liste,
+                ]);
+            }
+                
+            return $this->render('projets/createProjet.html.twig', [
+                'createProjetForm' => $form->createView(),
+            ]);
+            
+        }
+
+        
     }
 
             

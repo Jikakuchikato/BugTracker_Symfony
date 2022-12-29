@@ -22,7 +22,7 @@
 
     <h2>Organiser mes projets :</h2><br>
 
-    <a href="/projet/create"><button class="btn btn-secondary">Créer un projet</button></a>
+    <a href="http://localhost:8000/projet/create"><button class="btn btn-secondary">Créer un projet</button></a>
     
 
     <br><br>
@@ -32,14 +32,14 @@
          {% for projet in projets %}
          <fieldset>
             <legend>
-                <a href="/projet?projetId={{projet.getId}}">{{projet.getTitre}} </a>
+                <a href="http://localhost:8000/projet?projetId={{projet.getId}}">{{projet.getTitre}} </a>
             </legend>
             <label>
                 {{ projet.getDescription }}
             </label>
             <label>
-                <a href=""><img src="./settings.png"></a>
-                <a href="/projet/delete?projetId={{projet.getId}}"><img src="/root/Bureau/delete.png"></a>
+                <a href="http://localhost:8000/#"><img src="settings.png"></a>
+                <a href="http://localhost:8000/projet/delete?projetId={{projet.getId}}"><img src="/root/Bureau/delete.png"></a>
             </label>
             
         </fieldset>
