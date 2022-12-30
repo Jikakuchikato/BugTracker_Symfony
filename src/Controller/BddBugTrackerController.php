@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class BddBugTrackerController extends AbstractController
 {
-    #[Route('/bdd/create', name: 'app_bdd_bug_tracker')]
+    #[Route('/xxx/create', name: 'app_bdd_bug_tracker')]
     public function createArticleTest(ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
@@ -32,7 +32,7 @@ class BddBugTrackerController extends AbstractController
 
     }
 
-    #[Route('/projet/createtest', name: 'app_create_projettest')]
+    #[Route('/xxx/createtest', name: 'app_create_projettest')]
     public function createProjetTest(ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
@@ -50,7 +50,7 @@ class BddBugTrackerController extends AbstractController
 
     }
 
-    #[Route('/blog', name: 'app_bdd_show')]
+    #[Route('/xxx/blog', name: 'app_bdd_show')]
     public function afficherArticle(ManagerRegistry $doctrine): Response
     {
         $articles = $doctrine->getRepository(Article::class)->findAll();
