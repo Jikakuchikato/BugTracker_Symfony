@@ -8,7 +8,9 @@ use Symfony\Component\Routing\Annotation\Route
 ;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Amp\Http\Client\Request;
+use Symfony\Component\HttpFoundation\Request;
+
+use App\Form\CreateProjetFormType;
 
 use App\Entity\Projet;
 use App\Entity\Categorie;
@@ -182,7 +184,7 @@ class ProjetController extends AbstractController
         
     }
 
-    #[Route('/projets/modifAuteurs', name: 'app_modif_auteur')]
+    #[Route('/projet/modifAuteurs', name: 'app_modif_auteur')]
     public function modifAuteurs(EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');

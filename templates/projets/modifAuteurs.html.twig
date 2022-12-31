@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 900px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+
+    <h1>Modifier projet</h1>
+    
+    {{ form_start(modifAuteurForm) }}
+        <p> Utilisateur :
+            {% for item in modifAuteurForm %}
+                item
+            {% endfor %}
+        </p>
+        
+        <a href="https://localhost:8000/projet/modifAuteurs"><button type="button" class="btn btn-secondary">Modifiers droits du projet</button></a>
+        <button type='submit' class='btn btn-secondary'>Modifier</button>
+
+    {{ form_end(createProjetForm) }}
+
+</div>
+{% endblock %}
