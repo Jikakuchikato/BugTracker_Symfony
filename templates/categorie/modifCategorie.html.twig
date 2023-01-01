@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 900px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+
+    <h1>Modification catégorie</h1>
+    
+    {{ form_start(createCategorieForm) }}
+        <p> Titre :
+            {{ form_row(createCategorieForm.titre, {value : categorie.getTitre}) }}
+        </p>
+        <p> Description :
+            {{ form_row(createCategorieForm.description, {value:categorie.getDescription}) }}
+        </p>
+
+        <button type='submit' class='btn btn-secondary'>Modifier</button>
+
+    {{ form_end(createCategorieForm) }}
+
+</div>
+{% endblock %}  
