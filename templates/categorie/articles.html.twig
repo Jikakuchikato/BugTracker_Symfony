@@ -20,11 +20,35 @@
     <h2>Liste</h2>
     <br>
 
+    {% if articlesCharge is defined %}
+        <h3>Pris en charge</h3>
+        {% for article in articlesCharge %}
+            <p>{{ article.getTitre }} 
+                <a href='http://localhost:8000/article/attribuer?catId={{categorie.getId}}&itemId={{article.getId}}'>A:<img src='#'><a>
+                <a href='http://localhost:8000/article/delete?catId={{categorie.getId}}&itemId={{article.getId}}'>D:<img src='#'><a>
+                <a href='http://localhost:8000/article/modif?catId={{categorie.getId}}&itemId={{article.getId}}'>M:<img src='#'><a>
+            </p>
+        {% endfor %}
+    {% endif %}
+
     {% if articles is defined %}
+        <h3>Disponible</h3>
         {% for article in articles %}
             <p>{{ article.getTitre }} 
-                <a href='http://localhost:8000/article/delete?catId={{categorie.getId}}&itemId={{article.getId}}'><img src='#'><a>
-                <a href='http://localhost:8000/article/modif?catId={{categorie.getId}}&itemId={{article.getId}}'><img src='#'><a>
+                <a href='http://localhost:8000/article/attribuer?catId={{categorie.getId}}&itemId={{article.getId}}'>A:<img src='#'><a>
+                <a href='http://localhost:8000/article/delete?catId={{categorie.getId}}&itemId={{article.getId}}'>D:<img src='#'><a>
+                <a href='http://localhost:8000/article/modif?catId={{categorie.getId}}&itemId={{article.getId}}'>M:<img src='#'><a>
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    {% if articlesResolu is defined %}
+        <h3>Terminé</h3>
+        {% for article in articlesResolu %}
+            <p>{{ article.getTitre }} 
+                <a href='http://localhost:8000/article/attribuer?catId={{categorie.getId}}&itemId={{article.getId}}'>A:<img src='#'><a>
+                <a href='http://localhost:8000/article/delete?catId={{categorie.getId}}&itemId={{article.getId}}'>D:<img src='#'><a>
+                <a href='http://localhost:8000/article/modif?catId={{categorie.getId}}&itemId={{article.getId}}'>M:<img src='#'><a>
             </p>
         {% endfor %}
     {% endif %}

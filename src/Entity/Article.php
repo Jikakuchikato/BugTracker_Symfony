@@ -35,6 +35,9 @@ class Article
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateresolu = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +123,18 @@ class Article
     public function setDateresolu(?\DateTimeInterface $dateresolu): self
     {
         $this->dateresolu = $dateresolu;
+
+        return $this;
+    }
+
+    public function getUser(): ?string
+    {
+        return $this->user;
+    }
+
+    public function setUser(?string $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

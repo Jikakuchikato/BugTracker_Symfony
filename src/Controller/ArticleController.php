@@ -37,11 +37,15 @@ class ArticleController extends AbstractController
             $entityManager->flush();
 
             $articles = $entityManager->getRepository(Article::class)->findBy(array('categorie'=>$_GET['catId']));
+            $articlesCharge = 1;
+            $articlesResolu = 1;
             $categories = $entityManager->getRepository(Categorie::class)->findOneBy(array('id'=>$_GET['catId']));
 
             return $this->render('categorie/articles.html.twig', [
                 'categorie' => $categories,
                 'articles' => $articles,
+                'articlesCharge' => $articlesCharge,
+                'articleResolu' => $articlesResolu,
             ]);
         }
 
@@ -109,5 +113,28 @@ class ArticleController extends AbstractController
         
     }
 
+    #[Route('/article/attribuer', name: 'app_modif_article')]
+    public function articleAtribuer(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $article = $entityManager->getRepository(Article::class)->findOneBy(array("id" => $_GET['itemId']));
+
+        $article->setDatecharge(new DateTime());
+        $article->setUser($this->getUser()->getUserIdentifier());
+
+        $entityManager->flush();
+
+        $articles = $entityManager->getRepository(Article::class)->findBy(array('categorie'=>$_GET['catId']));
+        $categorie = $entityManager->getRepository(Categorie::class)->findOneBy(array('id'=>$_GET['catId']));
+
+        return $this->render('categorie/articles.html.twig', [
+            'infos' => 'Article pris en charge',
+            'articles' => $articles,
+            'categorie' => $categorie,
+        ]);
+        
+        
+    }
     
 }

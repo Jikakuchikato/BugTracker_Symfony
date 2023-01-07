@@ -13,9 +13,10 @@ use App\Entity\Article;
 use App\Entity\Categorie;
 
 use App\Form\CreateCategorieFormType;
-
-
+use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Constraints\Existence;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class CategorieController extends AbstractController
 {
@@ -25,11 +26,26 @@ class CategorieController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $categorie = $entityManager->getRepository(Categorie::class)->findBy(array('id' => $_GET['catId']));
-        $articles = $entityManager->getRepository(Article::class)->findBy(array('categorie'=>$_GET['catId']));
+        $articles = $entityManager->getRepository(Article::class)->findBy(array(
+            'categorie'=>$_GET['catId'],
+            'datecharge'=>NULL,
+            'dateresolu'=>NULL,
+        ));
+        $articlesCharge = $entityManager->getRepository(Article::class)->findBy(array(
+            'categorie'=>$_GET['catId'],
+            'dateresolu' => NULL,
+            'datecharge' => NULL,
+        ));
+        $articlesResolu = $entityManager->getRepository(Article::class)->findBy(array(
+            'categorie'=>$_GET['catId'],
+        ));
+
 
         return $this->render('categorie/articles.html.twig', [
             'categorie' => $categorie[0],
             'articles' => $articles,
+            'articlesCharge' => $articlesCharge,
+            'articlesResolu' => $articlesResolu,
         ]);
     }
 
@@ -50,7 +66,7 @@ class CategorieController extends AbstractController
             $c->setDescription($form->get('description')->getData());
             $c->setProjetId($projetId);
             $c->setDateCrea(new DateTime);
-            $c->setAuteur($this->getUser()->getUsername());
+            $c->setAuteur($this->getUser()->getUserIdentifier());
 
             $entityManager->persist($c);
             $entityManager->flush();
